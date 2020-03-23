@@ -33,6 +33,10 @@ const handleEnabledList = async (id:string, enabled:boolean, actionRef:any) => {
   }
 }
 
+const handleShowCreateRoleModal = () => {
+  console.log('xxxxxxxxxxxxx')
+}
+
 const RoleList: React.FC<{}> = () => {
   const [sorter, setSorter] = useState<string>('');
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
@@ -103,13 +107,6 @@ const RoleList: React.FC<{}> = () => {
         <ProTable
           onSubmit={async value => {
             console.log('🌺 value: ', value)
-            // const success = await handleAdd(value);
-            // if (success) {
-            //   handleModalVisible(false);
-            //   if (actionRef.current) {
-            //     actionRef.current.reload();
-            //   }
-            // }
           }}
           rowKey="id"
           type="form"

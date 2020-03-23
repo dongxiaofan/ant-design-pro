@@ -153,6 +153,12 @@ export default {
               component: './system/role',
             },
             {
+              name: 'system.policySupport',
+              icon: 'team',
+              path: '/policySupport',
+              component: './system/policySupport',
+            },
+            {
               component: './404',
             },
           ],

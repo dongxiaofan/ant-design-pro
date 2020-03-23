@@ -1,0 +1,146 @@
+// 框架样式
+.table-operations{
+  height: 70px;
+  .table-operations-left-test{
+    line-height: 70px;
+    font-weight: bold;
+  }
+}
+
+.search-form{
+  &.search-form-100{
+    .ant-form{
+      .ant-col{
+        .ant-form-item{
+          margin-bottom: 16px;
+        }
+        .ant-form-item-control-wrapper{
+          .ant-form-item-control{
+            .ant-form-item-children{
+              width: 100%;
+              display: inline-block;
+              .ant-calendar-picker{
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .ant-form{
+    .ant-col{
+      .ant-form-item{
+        margin-bottom: 16px;
+      }
+    }
+  }
+}
+
+.base-form{
+  .ant-form{
+    overflow: hidden;
+    .ant-col{
+      .ant-form-item{
+        &.item-required{
+          .ant-form-item-label{
+            &:before{
+              content: "*";
+              display: inline-block;
+              margin-right: 4px;
+              line-height: 1;
+              font-family: SimSun;
+              font-size: 12px;
+              color: red;
+            }
+          }
+        }
+        .ant-form-item-label{
+        }
+        .ant-form-item-control-wrapper{
+          .ant-form-item-control{
+            .ant-form-item-children{
+              width: 100%;
+              display: inline-block;
+              .ant-calendar-picker{
+                width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.has-disabled{
+  .ant-form{
+    .ant-form-item{
+      .ant-form-item-control{
+        .ant-form-item-children{
+          .ant-input-affix-wrapper{
+            input{
+              background-color: transparent;
+              border-color: transparent;
+              cursor: auto;
+              color: #515a6e;
+            }
+            i{
+              display: none;
+            }
+          }
+          .ant-select-disabled{
+            .ant-select-selection{
+              background-color: transparent;
+              border-color: transparent;
+              color: #515a6e;
+              cursor: auto;
+              i{
+                display: none;
+              }
+            }
+          }
+          .ant-calendar-picker{
+            input{
+              background-color: transparent;
+              border-color: transparent;
+              cursor: auto;
+              color: #515a6e;
+            }
+            i{
+              display: none;
+            }
+          }
+          .ant-cascader-picker{
+            background-color: transparent;
+            color: #515a6e;
+            cursor: auto;
+            input{
+              border-color: transparent;
+            }
+            i{
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.public-title{
+  position: relative;
+  line-height: 48px;
+  padding-left: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  &:before{
+    content: "";
+    width: 4px;
+    height: 20px;
+    background: #188cc7;
+    position: absolute;
+    top: 14px;
+    left: 0;
+  }
+}

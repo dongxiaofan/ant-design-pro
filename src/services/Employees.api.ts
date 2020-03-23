@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export default class EmployeeApi {
-// 获取员工花名册列表
+  // 获取员工花名册列表
   static async getEmployeeListNew (params: any) {
     params.pageIndex = params.current
     delete params.current

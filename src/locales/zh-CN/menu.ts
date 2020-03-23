@@ -51,4 +51,5 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
   'menu.customer.roster': '员工管理',
   'menu.system.role': '角色管理',
+  'menu.system.policySupport': '政策管理',
 };
