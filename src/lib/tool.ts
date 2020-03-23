@@ -61,9 +61,21 @@ function getSelectValueList (typeName:any, arr:any) {
   })
 }
 
+//遍历树  获取id数组
+function getTree (arr:any) {
+  for(var i in arr){
+    arr[i].value = arr[i].id
+    if(arr[i].children){
+      getTree(arr[i].children);
+    }
+  }
+  return arr
+}
+
 export default {
   queryUrlParams,
   getEnum,
   getEnum2,
-  getSelectValueList
+  getSelectValueList,
+  getTree
 }
