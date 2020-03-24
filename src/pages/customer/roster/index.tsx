@@ -7,13 +7,13 @@ import { SorterResult } from 'antd/es/table/interface';
 
 import CreateRosterForm from './components/CreateRosterForm';
 import { TableListItem } from './data';
-import EmployeesApi from '@/services/Employees.api'
+// import EmployeesApi from '@/services/Employees.api'
 
-import { rosterListThead } from './tableHead'
+import { roleListThead } from './tableHead'
 import RoleApi from '@/services/Role.api';
 
 const query = async (params:any) => {
-  let resp = await EmployeesApi.getEmployeeListNew(params)
+  let resp = await RoleApi.getList(params)
   if (resp.success) {
     resp.total = resp.totalRows
     return resp
@@ -25,11 +25,27 @@ const searchFn = async (actionRef:any) => {
   actionRef.current?.reload()
 }
 
+// 启用/禁用操作
+const handleEnabledList = async (id:string, enabled:boolean, actionRef:any) => {
+  var params = {
+    ids: id,
+    enabled: enabled
+  }
+  let resp = await RoleApi.enabledList(params)
+  if (resp.success) {
+    message.success(resp.message)
+    actionRef.current?.reload()
+  } else {
+    message.error(resp.message)
+  }
+}
+
 const Roster: React.FC<{}> = () => {
   const [sorter, setSorter] = useState<string>('');
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
 
+  // 补充操作列且合并
   const option:any = {
     title: '操作',
     dataIndex: 'option',
@@ -39,22 +55,29 @@ const Roster: React.FC<{}> = () => {
         <Popconfirm
           title="是否确定删除？"
           onConfirm={async () => {
-            const resp = await EmployeesApi.deleteEmployee({id: record.id});
+            const resp = await RoleApi.delete({id: record.id});
             if (resp.success) {
               message.success(resp.message)
-              actionRef.current?.reload();
+              actionRef.current?.reload()
             } else {
               message.error(resp.message)
             }
           }}
           okText="确认"
           cancelText="取消">
-          <a href="#">删除</a>
+          <a>删除</a>
         </Popconfirm>
+        <a onClick={() => handleModalVisible(true)}>编辑</a>
+        {
+          record.enabled ?
+          <a onClick={()=>{handleEnabledList(record.id, false, actionRef)}}>禁用</a>
+          :
+          <a onClick={()=>{handleEnabledList(record.id, true, actionRef)}}>启用</a>
+        }
       </div>
     ),
   }
-  const columns:any = rosterListThead.concat(option)
+  const columns:any = roleListThead.concat(option)
 
   return (
     <PageHeaderWrapper>
