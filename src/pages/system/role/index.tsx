@@ -2,12 +2,11 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, message, Popconfirm } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import ProTable, { ActionType, Search } from '@ant-design/pro-table';
+import ProTable, { ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
 import { TableListItem } from './data';
 import { roleListThead } from './tableHead';
-import UserApi from '@/services/User.api';
 import RoleApi from '@/services/Role.api';
 
 import CreateRoleModal from './components/CreateRoleModal';
@@ -24,7 +23,7 @@ const RoleList: React.FC<{}> = () => {
 
   // 获取列表
   const query = async (params:any) => {
-    let resp = await UserApi.getList(params)
+    let resp = await RoleApi.getList(params)
     if (resp.success) {
       resp.total = resp.totalRows
       return resp
@@ -33,7 +32,7 @@ const RoleList: React.FC<{}> = () => {
 
   // 重置表格
   const searchFn = async (actionRef:any) => {
-    actionRef.current?.reset()
+    actionRef.current?.reload()
   }
   
   // 启用/禁用操作
@@ -42,7 +41,7 @@ const RoleList: React.FC<{}> = () => {
       ids: id,
       enabled: enabled
     }
-    let resp = await UserApi.enabledList(params)
+    let resp = await RoleApi.enabledList(params)
     if (resp.success) {
       message.success(resp.message)
       actionRef.current?.reload()
@@ -52,9 +51,9 @@ const RoleList: React.FC<{}> = () => {
   }
 
   // 显示弹窗-新建/编辑
-  const handleShowCreateRoleModal = (id:string, row:any) => {
-    modals['createRoleModal'].getModel(id, row)
-    modals['createRoleModal'].show()
+  const handleShowCreateRoleModal = (id:string) => {
+    modals['createRoleModal'].getModel(id)
+    // modals['createRoleModal'].show()
   }
   
   // Pro-Table action
@@ -70,9 +69,10 @@ const RoleList: React.FC<{}> = () => {
         <Popconfirm
           title="是否确定删除？"
           onConfirm={async () => {
-            const resp = await UserApi.handleDelete({id: record.id});
+            const resp = await RoleApi.delete({id: record.id});
             if (resp.success) {
               message.success(resp.message)
+              actionRef.current?.reload()
             } else {
               message.error(resp.message)
             }
@@ -81,7 +81,7 @@ const RoleList: React.FC<{}> = () => {
           cancelText="取消">
           <a>删除</a>
         </Popconfirm>
-        <a onClick={() => handleShowCreateRoleModal(record.id, record)}>编辑</a>
+        <a onClick={() => handleShowCreateRoleModal(record.id)}>编辑</a>
         {
           record.enabled ?
           <a onClick={()=>{handleEnabledList(record.id, false, actionRef)}}>禁用</a>
@@ -107,7 +107,7 @@ const RoleList: React.FC<{}> = () => {
         }}
         params={{}}
         toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleShowCreateRoleModal('', {})}>
+          <Button type="primary" onClick={() => handleShowCreateRoleModal('')}>
             <PlusOutlined /> 新建
           </Button>
         ]}

@@ -5,11 +5,12 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
-import CreateForm from './components/CreateForm';
+import CreateRosterForm from './components/CreateRosterForm';
 import { TableListItem } from './data';
 import EmployeesApi from '@/services/Employees.api'
 
 import { rosterListThead } from './tableHead'
+import RoleApi from '@/services/Role.api';
 
 const query = async (params:any) => {
   let resp = await EmployeesApi.getEmployeeListNew(params)
@@ -17,6 +18,11 @@ const query = async (params:any) => {
     resp.total = resp.totalRows
     return resp
   }
+}
+
+// 重置表格
+const searchFn = async (actionRef:any) => {
+  actionRef.current?.reload()
 }
 
 const Roster: React.FC<{}> = () => {
@@ -78,23 +84,7 @@ const Roster: React.FC<{}> = () => {
         rowSelection={{}}
       />
 
-      <CreateForm onCancel={() => handleModalVisible(false)} modalVisible={createModalVisible}>
-        <ProTable
-          onSubmit={async value => {
-            // const success = await handleAdd(value);
-            // if (success) {
-            //   handleModalVisible(false);
-            //   if (actionRef.current) {
-            //     actionRef.current.reload();
-            //   }
-            // }
-          }}
-          rowKey="id"
-          type="form"
-          columns={columns}
-          rowSelection={{}}
-        />
-      </CreateForm>
+      <CreateRosterForm onCancel={() => handleModalVisible(false)} showModal={createModalVisible} query={() => searchFn(actionRef)} />
     </PageHeaderWrapper>
   );
 };

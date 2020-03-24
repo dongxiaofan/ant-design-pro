@@ -49,7 +49,7 @@ export default {
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
-  'menu.customer.roster': '员工管理',
-  'menu.system.role': '角色管理',
-  'menu.system.policySupport': '政策管理',
+  'menu.customer.roster': 'ProTable(函数组件)',
+  'menu.system.role': 'ProTable(class组件)',
+  'menu.system.policySupport': '传统表格及相关弹窗(class组件)',
 };

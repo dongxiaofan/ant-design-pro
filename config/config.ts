@@ -154,7 +154,7 @@ export default {
             },
             {
               name: 'system.policySupport',
-              icon: 'team',
+              icon: 'solution',
               path: '/policySupport',
               component: './system/policySupport',
             },
