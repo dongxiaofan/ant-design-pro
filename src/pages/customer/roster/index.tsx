@@ -6,7 +6,7 @@ import ProTable, { ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
 import CreateRosterForm from './components/CreateRosterForm';
-import ImportForm from './components/ImportForm';
+import ImportForm from '@/components/other/ImportForm';
 import { TableListItem, FormDataType } from './data';
 
 import { roleListThead } from './tableHead'

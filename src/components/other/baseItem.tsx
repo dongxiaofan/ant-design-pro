@@ -68,7 +68,6 @@ class BaseItem extends Component<any,any> {
             return (
               <Col span={24} key={index}>
                 <Form.Item label={item.label} name={item.model} rules={formRules[`${item.model}`]}>                  
-                  <Button target="_blank" href={templateDownLoadUrl} className="mr-10">模板下载</Button>
                   <Upload action={actionUrl}>
                     <Button>选择文件</Button>
                   </Upload>
