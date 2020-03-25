@@ -51,7 +51,15 @@ const errorHandler = (error: { response: Response }): Response => {
 const request = extend({
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
-  headers: { enctype: 'multipart/form-data' },
 });
+
+// response拦截器, 处理response
+request.interceptors.response.use((response, options) => {
+  let access_token = response.headers.get("access_token");
+  if (access_token) {
+    localStorage.setItem("access_token", access_token);
+  }
+  return response;
+})
 
 export default request;

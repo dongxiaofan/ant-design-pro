@@ -5,7 +5,7 @@ import { connect } from 'dva';
 import { ConnectProps, ConnectState } from '@/models/connect';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
-import SelectLang from '../SelectLang';
+// import SelectLang from '../SelectLang';
 import styles from './index.less';
 
 export type SiderTheme = 'light' | 'dark';
@@ -53,7 +53,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
         //   //console.log('input', value);
         // }}
       />
-      <Tooltip title="使用文档">
+      {/* <Tooltip title="使用文档">
         <a
           target="_blank"
           href="https://pro.ant.design/docs/getting-started"
@@ -62,14 +62,14 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
         >
           <QuestionCircleOutlined />
         </a>
-      </Tooltip>
+      </Tooltip> */}
       <Avatar />
       {REACT_APP_ENV && (
         <span>
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
         </span>
       )}
-      <SelectLang className={styles.action} />
+      {/* <SelectLang className={styles.action} /> */}
     </div>
   );
 };

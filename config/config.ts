@@ -135,28 +135,16 @@ export default {
               ],
             },
             {
-              name: 'list.table-list',
+              name: '默认表格',
               icon: 'table',
               path: '/list',
               component: './ListTableList',
             },
             {
-              name: 'customer.roster',
+              name: '员工管理',
               icon: 'userSwitch',
               path: '/roster',
               component: './customer/roster',
-            },
-            {
-              name: 'system.role',
-              icon: 'team',
-              path: '/role',
-              component: './system/role',
-            },
-            {
-              name: 'system.policySupport',
-              icon: 'solution',
-              path: '/policySupport',
-              component: './system/policySupport',
             },
             {
               component: './404',

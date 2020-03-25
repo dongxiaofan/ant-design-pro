@@ -30,3 +30,12 @@ export interface TableListParams {
   pageIndex?: number;
   pageSize?: number;
 }
+
+export interface FormDataType {
+  name?:string;
+  dataAccessRoleType?:string;
+  operationRoleType?:string;
+  productTypeArr?:string;
+  enabled?:string;
+  permissionIdList?:Array;
+}

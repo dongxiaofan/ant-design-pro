@@ -42,6 +42,8 @@ const Model: LoginModelType = {
       });
       // Login successfully
       if (response.success) {
+        localStorage.setItem('loginInfo', JSON.stringify(response.data))
+        localStorage.setItem('access_token', response.data.access_token)
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };

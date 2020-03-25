@@ -1,17 +1,18 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Popconfirm } from 'antd';
-import React, { useState, useRef } from 'react';
+import { Button, message, Popconfirm, Dropdown, Menu } from 'antd';
+import React, { useState, useRef, useEffect } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
 import CreateRosterForm from './components/CreateRosterForm';
-import { TableListItem } from './data';
-// import EmployeesApi from '@/services/Employees.api'
+import ImportForm from './components/ImportForm';
+import { TableListItem, FormDataType } from './data';
 
 import { roleListThead } from './tableHead'
 import RoleApi from '@/services/Role.api';
 
+// 获取列表
 const query = async (params:any) => {
   let resp = await RoleApi.getList(params)
   if (resp.success) {
@@ -40,10 +41,29 @@ const handleEnabledList = async (id:string, enabled:boolean, actionRef:any) => {
   }
 }
 
+// 批量导入
+const handleImport = () => {}
+
 const Roster: React.FC<{}> = () => {
-  const [sorter, setSorter] = useState<string>('');
-  const [createModalVisible, handleModalVisible] = useState<boolean>(false);
+  const [sorter, setSorter, ] = useState<string>('');
+  const [createModalTitle, setCreateModalTitle] = useState<string>('');
+  const [createModalVisible, handleCreateModalVisible] = useState<boolean>(false);
+  const [importModalVisible, handleImportModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
+  const [currentVal, setCurrentVal] = useState<Partial<FormDataType> | undefined>(undefined);
+
+  // 显示弹窗-新增/编辑
+  const handleShowCreateModal = (item: any) => {
+    setCreateModalTitle(item ? '编辑角色' : '新增角色')
+    handleCreateModalVisible(true);
+    setCurrentVal(item);
+  }
+
+  // 显示弹窗-导入
+  const handleShowImportModal = () => {
+    console.log('点击了批量导入')
+    handleImportModalVisible(true);
+  }
 
   // 补充操作列且合并
   const option:any = {
@@ -67,7 +87,7 @@ const Roster: React.FC<{}> = () => {
           cancelText="取消">
           <a>删除</a>
         </Popconfirm>
-        <a onClick={() => handleModalVisible(true)}>编辑</a>
+        <a onClick={() => handleShowCreateModal(record)}>编辑</a>
         {
           record.enabled ?
           <a onClick={()=>{handleEnabledList(record.id, false, actionRef)}}>禁用</a>
@@ -93,9 +113,24 @@ const Roster: React.FC<{}> = () => {
         }}
         params={{}}
         toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleModalVisible(true)}>
-            <PlusOutlined /> 新建
-          </Button>
+          <Button type="primary" onClick={() => handleShowCreateModal(null)}><PlusOutlined /> 新建</Button>,
+          <Dropdown
+            overlay={
+              <Menu
+                onClick={async e => {
+                  if (e.key === 'import') {
+                    await handleShowImportModal();
+                    action.reload();
+                  }
+                }}
+                selectedKeys={[]}
+              >
+                <Menu.Item key="import">批量导入</Menu.Item>
+              </Menu>
+            }
+          >
+            <Button>批量操作</Button>
+        </Dropdown>
         ]}
         tableAlertRender={(selectedRowKeys, selectedRows) => (
           <div>
@@ -107,7 +142,10 @@ const Roster: React.FC<{}> = () => {
         rowSelection={{}}
       />
 
-      <CreateRosterForm onCancel={() => handleModalVisible(false)} showModal={createModalVisible} query={() => searchFn(actionRef)} />
+      {/* 新建/编辑弹窗 */}
+      <CreateRosterForm currentVal={currentVal} modalTitle={createModalTitle} onCancel={() => handleCreateModalVisible(false)} showCreateModal={createModalVisible} query={() => searchFn(actionRef)} />
+      {/* 批量导入弹窗 */}
+      <ImportForm onCancel={() => handleImportModalVisible(false)} showImportModal={importModalVisible} query={() => searchFn(actionRef)} />
     </PageHeaderWrapper>
   );
 };
