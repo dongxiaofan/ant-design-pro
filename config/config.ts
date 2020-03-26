@@ -5,11 +5,9 @@ import slash from 'slash2';
 import themePluginConfig from './themePluginConfig';
 import proxy from './proxy';
 import webpackPlugin from './plugin.config';
-
-const { pwa } = defaultSettings;
-
-// preview.pro.ant.design only do not use in your production ;
+const { pwa } = defaultSettings; // preview.pro.ant.design only do not use in your production ;
 // preview.pro.ant.design 专用环境变量，请不要在你的项目中使用它。
+
 const { ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION, REACT_APP_ENV } = process.env;
 const isAntDesignProPreview = ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION === 'site';
 const plugins: IPlugin[] = [
@@ -41,8 +39,7 @@ const plugins: IPlugin[] = [
               importWorkboxFrom: 'local',
             },
           }
-        : false,
-      // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
+        : false, // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
       // dll features https://webpack.js.org/plugins/dll-plugin/
       // dll: {
       //   include: ['dva', 'dva/router', 'dva/saga', 'dva/fetch'],
@@ -69,14 +66,12 @@ if (isAntDesignProPreview) {
       code: 'UA-72788897-6',
     },
   ]);
-
   plugins.push([
     'umi-plugin-pro',
     {
       serverUrl: 'https://ant-design-pro.netlify.com',
     },
   ]);
-
   plugins.push(['umi-plugin-antd-theme', themePluginConfig]);
 }
 
@@ -145,6 +140,75 @@ export default {
               icon: 'userSwitch',
               path: '/roster',
               component: './customer/roster',
+            }, // {
+            //   name: '客户管理',
+            //   icon: 'userSwitch',
+            //   path: '/customerManage',
+            //   component: './businessCenter/customerManage',
+            // },
+            {
+              name: '业务中心',
+              icon: 'userSwitch',
+              path: '/businessCenter',
+              // component: './businessCenter',
+              routes: [
+                {
+                  path: '/businessCenter/customerManage',
+                  name: '客户管理',
+                  icon: 'smile',
+                  component: './businessCenter/customerManage',
+                },
+              ],
+            },
+            {
+              name: '结算中心',
+              icon: 'smile',
+              path: '/settle-center',
+              component: './settleCenter',
+              routes: [
+                {
+                  name: '客户账单',
+                  icon: 'smile',
+                  path: '/settle-center/customer-bill',
+                  component: './settleCenter/customerBill',
+                },
+                {
+                  name: '发票管理',
+                  icon: 'smile',
+                  path: '/settle-center/invoices-manage',
+                  component: './settleCenter/invoicesManage',
+                },
+                {
+                  name: '客户结算',
+                  icon: 'smile',
+                  path: '/settle-center/settle-accounts',
+                  component: './settleCenter/settleAccounts',
+                },
+                {
+                  name: '企业钱包',
+                  icon: 'smile',
+                  path: '/settle-center/wallet',
+                  component: './settleCenter/wallet',
+                },
+                {
+                  name: '纳税申报',
+                  icon: 'smile',
+                  path: '/settle-center/pay-taxes',
+                  component: './settleCenter/payTaxes',
+                },
+                {
+                  name: '支付个人',
+                  icon: 'smile',
+                  path: '/settle-center/payoff',
+                  component: './settleCenter/payoff',
+                },
+                {
+                  name: '银行账单',
+                  icon: 'smile',
+                  path: '/settle-center/bank-statement',
+                  component: './settleCenter/bankStatement',
+                },
+              ],
             },
             {
               component: './404',
@@ -182,7 +246,7 @@ export default {
         resourcePath: string;
       },
       _: string,
-      localName: string,
+      localName: string
     ) => {
       if (
         context.resourcePath.includes('node_modules') ||
@@ -191,7 +255,9 @@ export default {
       ) {
         return localName;
       }
+
       const match = context.resourcePath.match(/src(.*)/);
+
       if (match && match[1]) {
         const antdProPath = match[1].replace('.less', '');
         const arr = slash(antdProPath)
@@ -200,6 +266,7 @@ export default {
           .map((a: string) => a.toLowerCase());
         return `antd-pro${arr.join('-')}-${localName}`.replace(/--/g, '-');
       }
+
       return localName;
     },
   },
