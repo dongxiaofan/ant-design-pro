@@ -5,7 +5,9 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProTable, { ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
-import CreateForm from './modal/CreateForm';
+import BuyForm from './modal/BuyForm';
+import SetForm from './modal/SetForm';
+import SignForm from './modal/SignForm';
 import { TableListItem } from './data';
 
 import { listThead } from './tableHead';
@@ -32,6 +34,11 @@ const handleDelete = async (params:any, actionRef:any) => {
   }
 }
 
+// 导出
+const handleExport = async () => {
+  message.success('你点击了导出')
+}
+
 // 重置表格
 const searchFn = async (actionRef:any) => {
   actionRef.current?.reload()
@@ -40,7 +47,9 @@ const searchFn = async (actionRef:any) => {
 const CustomerManage: React.FC<{}> = () => {
   const [sorter, setSorter, ] = useState<string>('');
   const [createModalTitle, setCreateModalTitle] = useState<string>('');
-  const [createModalVisible, handleCreateModalVisible] = useState<boolean>(false);
+  const [createModalVisible, handleBuyModalVisible] = useState<boolean>(false);
+  const [setModalVisible, handleSetModalVisible] = useState<boolean>(false);
+  const [signModalVisible, handleSignModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [currentVal, setCurrentVal] = useState(undefined);
   const [areaTree, setAreaTree] = useState();
@@ -59,9 +68,21 @@ const CustomerManage: React.FC<{}> = () => {
   }
 
   // 显示弹窗-新增/编辑
-  const handleShowCreateModal = (item: any) => {
+  const handleShowBuyModal = (item: any) => {
     setCreateModalTitle(item ? '编辑客户' : '新增客户')
-    handleCreateModalVisible(true);
+    handleBuyModalVisible(true);
+    setCurrentVal(item);
+  }
+
+  // 显示弹窗-导入
+  const handleShowSetModal = (item: any) => {
+    handleSetModalVisible(true);
+    setCurrentVal(item);
+  }
+
+  // 显示弹窗-签约
+  const handleShowSignModal = (item: any) => {
+    handleSignModalVisible(true);
     setCurrentVal(item);
   }
 
@@ -70,9 +91,11 @@ const CustomerManage: React.FC<{}> = () => {
     title: '操作',
     dataIndex: 'option',
     valueType: 'option',
+    width: 240,
     render: (text:string, record:any) => (
       <div>
-        <a onClick={() => handleShowCreateModal(record)}>编辑</a>
+        <a onClick={() => handleShowSignModal(record)}>提前停保</a>
+        <a onClick={() => handleShowBuyModal(record)}>更改人员</a>
         <Popconfirm
           title="是否确定删除？"
           onConfirm={() => handleDelete({id: record.id}, actionRef)}
@@ -99,7 +122,8 @@ const CustomerManage: React.FC<{}> = () => {
         }}
         params={{}}
         toolBarRender={(action, { selectedRows }) => [
-          <Button type="primary" onClick={() => handleShowCreateModal(null)}><PlusOutlined /> 新建</Button>
+          <Button type="primary" ghost onClick={() => handleShowSetModal(null)}>商保设置</Button>,
+          <Button type="primary" onClick={() => handleShowBuyModal(null)}><PlusOutlined /> 购买商保</Button>
         ]}
         tableAlertRender={(selectedRowKeys, selectedRows) => (
           <div>
@@ -111,13 +135,24 @@ const CustomerManage: React.FC<{}> = () => {
         rowSelection={{}}
       />
 
-      {/* 新建/编辑弹窗 */}
-      <CreateForm
-        currentVal={currentVal}
-        areaTree={areaTree}
-        modalTitle={createModalTitle}
-        onCancel={() => handleCreateModalVisible(false)}
-        showCreateModal={createModalVisible}
+      {/* 购买商保弹窗 */}
+      <BuyForm
+        onCancel={() => handleBuyModalVisible(false)}
+        showBuyModal={createModalVisible}
+        query={() => searchFn(actionRef)}
+      />
+
+      {/* 商保设置弹窗 */}
+      <SetForm
+        onCancel={() => handleSetModalVisible(false)}
+        showSetModal={setModalVisible}
+        query={() => searchFn(actionRef)}
+      />
+
+      {/* 签约弹窗 */}
+      <SignForm
+        onCancel={() => handleSignModalVisible(false)}
+        showSignModal={signModalVisible}
         query={() => searchFn(actionRef)}
       />
     </PageHeaderWrapper>

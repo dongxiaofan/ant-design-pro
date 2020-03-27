@@ -1,13 +1,18 @@
 export interface TableListItem {
-  aaa: string;
+  aaa: date;
   bbb: string;
   ccc: string;
-  ddd: string;
-  eee: string;
+  ddd: number;
+  eee: number;
   fff: string;
   ggg: array;
   hhh: string;
-  iii: string
+  iii: string;
+  jjj: string;
+  kkk: date;
+  lll: date;
+  mmm: string;
+  nnn: string
 }
 
 export interface TableListPagination {
@@ -22,13 +27,18 @@ export interface TableListData {
 }
 
 export interface TableListParams {
-  aaa: string;
+  aaa: date;
   bbb: string;
   ccc: string;
-  ddd: string;
-  eee: string;
+  ddd: number;
+  eee: number;
   fff: string;
   ggg: array;
   hhh: string;
-  iii: string
+  iii: string;
+  jjj: string;
+  kkk: date;
+  lll: date;
+  mmm: string;
+  nnn: string
 }

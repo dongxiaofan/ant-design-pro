@@ -6,6 +6,8 @@ import ProTable, { ActionType } from '@ant-design/pro-table';
 import { SorterResult } from 'antd/es/table/interface';
 
 import CreateForm from './modal/CreateForm';
+import ImportForm from './modal/ImportForm';
+import SignForm from './modal/SignForm';
 import { TableListItem } from './data';
 
 import { listThead } from './tableHead';
@@ -32,6 +34,11 @@ const handleDelete = async (params:any, actionRef:any) => {
   }
 }
 
+// 导出
+const handleExport = async () => {
+  message.success('你点击了导出')
+}
+
 // 重置表格
 const searchFn = async (actionRef:any) => {
   actionRef.current?.reload()
@@ -41,6 +48,8 @@ const CustomerManage: React.FC<{}> = () => {
   const [sorter, setSorter, ] = useState<string>('');
   const [createModalTitle, setCreateModalTitle] = useState<string>('');
   const [createModalVisible, handleCreateModalVisible] = useState<boolean>(false);
+  const [importModalVisible, handleImportModalVisible] = useState<boolean>(false);
+  const [signModalVisible, handleSignModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [currentVal, setCurrentVal] = useState(undefined);
   const [areaTree, setAreaTree] = useState();
@@ -65,6 +74,18 @@ const CustomerManage: React.FC<{}> = () => {
     setCurrentVal(item);
   }
 
+  // 显示弹窗-导入
+  const handleShowImportModal = (item: any) => {
+    handleImportModalVisible(true);
+    setCurrentVal(item);
+  }
+
+  // 显示弹窗-签约
+  const handleShowSignModal = (item: any) => {
+    handleSignModalVisible(true);
+    setCurrentVal(item);
+  }
+
   // 补充操作列且合并
   const option:any = {
     title: '操作',
@@ -72,6 +93,7 @@ const CustomerManage: React.FC<{}> = () => {
     valueType: 'option',
     render: (text:string, record:any) => (
       <div>
+        <a onClick={() => handleShowSignModal(record)}>签约</a>
         <a onClick={() => handleShowCreateModal(record)}>编辑</a>
         <Popconfirm
           title="是否确定删除？"
@@ -99,6 +121,8 @@ const CustomerManage: React.FC<{}> = () => {
         }}
         params={{}}
         toolBarRender={(action, { selectedRows }) => [
+          <Button onClick={() => handleExport()}>导出</Button>,
+          <Button type="primary" ghost onClick={() => handleShowImportModal(null)}>导入</Button>,
           <Button type="primary" onClick={() => handleShowCreateModal(null)}><PlusOutlined /> 新建</Button>
         ]}
         tableAlertRender={(selectedRowKeys, selectedRows) => (
@@ -118,6 +142,20 @@ const CustomerManage: React.FC<{}> = () => {
         modalTitle={createModalTitle}
         onCancel={() => handleCreateModalVisible(false)}
         showCreateModal={createModalVisible}
+        query={() => searchFn(actionRef)}
+      />
+
+      {/* 导入弹窗 */}
+      <ImportForm
+        onCancel={() => handleImportModalVisible(false)}
+        showImportModal={importModalVisible}
+        query={() => searchFn(actionRef)}
+      />
+
+      {/* 签约弹窗 */}
+      <SignForm
+        onCancel={() => handleSignModalVisible(false)}
+        showSignModal={signModalVisible}
         query={() => searchFn(actionRef)}
       />
     </PageHeaderWrapper>

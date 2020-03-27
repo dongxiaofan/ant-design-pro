@@ -128,6 +128,25 @@
   }
 }
 
+.ant-row{
+  .ant-col{
+    &.hide-label{
+      .ant-row{
+        .ant-form-item-label{
+          opacity: 0;
+        }
+      }
+    }
+    .ant-row{
+      .ant-form-item-control{
+        .ant-picker{
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
 .public-title{
   position: relative;
   line-height: 48px;

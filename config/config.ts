@@ -129,28 +129,22 @@ export default {
                 },
               ],
             },
-            {
-              name: '默认表格',
-              icon: 'table',
-              path: '/list',
-              component: './ListTableList',
-            },
-            {
-              name: '员工管理',
-              icon: 'userSwitch',
-              path: '/roster',
-              component: './customer/roster',
-            }, // {
-            //   name: '客户管理',
+            // {
+            //   name: '默认表格',
+            //   icon: 'table',
+            //   path: '/list',
+            //   component: './ListTableList',
+            // },
+            // {
+            //   name: '员工管理',
             //   icon: 'userSwitch',
-            //   path: '/customerManage',
-            //   component: './businessCenter/customerManage',
+            //   path: '/roster',
+            //   component: './customer/roster',
             // },
             {
               name: '业务中心',
               icon: 'userSwitch',
               path: '/businessCenter',
-              // component: './businessCenter',
               routes: [
                 {
                   path: '/businessCenter/customerManage',
@@ -158,13 +152,31 @@ export default {
                   icon: 'smile',
                   component: './businessCenter/customerManage',
                 },
+                {
+                  path: '/businessCenter/projectManage',
+                  name: '项目管理',
+                  icon: 'smile',
+                  component: './businessCenter/projectManage',
+                },
+                {
+                  path: '/businessCenter/personnelManage',
+                  name: '人员管理',
+                  icon: 'smile',
+                  component: './businessCenter/personnelManage',
+                },
+                {
+                  path: '/businessCenter/commercialManage',
+                  name: '商保管理',
+                  icon: 'smile',
+                  component: './businessCenter/commercialManage',
+                },
               ],
             },
             {
               name: '结算中心',
               icon: 'smile',
               path: '/settle-center',
-              component: './settleCenter',
+              // component: './settleCenter',
               routes: [
                 {
                   name: '客户账单',
