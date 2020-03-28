@@ -74,11 +74,6 @@ const BuyForm: React.FC<BuyFormProps> = props => {
 
   // 根据ID获取角色信息
   const getModel = async (id:any) => {
-    // var params = {'parameter.id': id}
-    // let resp = await RoleApi.getModel(params)
-    // if (resp.success) {
-      
-    // }
     formData.setFieldsValue({
       ...{}
     });

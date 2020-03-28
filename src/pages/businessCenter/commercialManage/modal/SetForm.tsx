@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Form, Button, message, Table, Popconfirm } from 'antd'
-import BaseItem from '@/components/other/baseItem'
+import { Modal, Form, Button, message, Table, Popconfirm } from 'antd';
+import BaseItem from '@/components/other/baseItem';
 import { setFormThead } from '../tableHead';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 interface SetFormProps {
   showSetModal: boolean;
@@ -9,7 +12,7 @@ interface SetFormProps {
   query: () => void;
 }
 interface SetToTable {
-  aaa: Date,
+  aaa: string,
   bbb: string,
   ccc: string
 }
@@ -57,15 +60,14 @@ const SetForm: React.FC<SetFormProps> = props => {
   // 表单验证并提交
   const onFinish = async (values:any, props:any) => {
     console.log('表单验证并提交 values: ', values)
-    var tempArr = tableData.concat({...{aaa: new Date()}, ...values})
+    var tempArr = tableData.concat({...{aaa: moment(new Date()).format('YYYY/MM/DD')}, ...values})
     setTableData(tempArr)
+    console.log('🌟tableData: ', tempArr)
+    formData.resetFields()
   }
 
   // 根据ID获取角色信息
-  const getModel = async (id:any) => {
-    formData.setFieldsValue({
-      ...{}
-    });
+  const getModel = async () => {
   }
 
   useEffect(() => {

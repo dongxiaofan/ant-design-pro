@@ -3,6 +3,8 @@ import request from '@/utils/request';
 export default class RoleApi {
   // 根据条件获取角色信息
   static async getList (params:any) {
+    params.pageIndex = params.current
+    delete params.current
     return request('/api/Role/GetList', {
       method: 'post',
       data: params

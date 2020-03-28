@@ -2,33 +2,30 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Form, Button, message } from 'antd'
 import BaseItem from '@/components/other/baseItem'
 
-interface SignFormProps {
-  showSignModal: boolean;
+interface CreateFormProps {
+  showCreateModal: boolean;
   onCancel: () => void;
   query: () => void;
+  currentVal: any;
+  modalTitle: any;
 }
 
 // 表单字段
 const formItem = [
-  { type: 'radio', label: '签约状态', placeholder: '请选择签约状态', model: 'aaa', options: 'tempOps' },
-  { type: 'radio', label: '签约形式', placeholder: '请选择签约形式', model: 'bbb', options: 'tempOps' },
-  { type: 'upload', label: '协议文本', placeholder: '请上传协议文本', model: 'ccc', accept: '.doc, .docx, .xls, .xlsx', hasTemplate: true }
+  { type: 'input', label:'账号', placeholder: '请输入账号', model: 'aaa' },
+  { type: 'input', label: '密码', placeholder: '请输入密码', model: 'bbb' }
 ]
 
 // 验证规则
 const rules:any = {
-  aaa: [{ required: true, message: '请选择签约状态', whitespace: true, type: 'number' }],
-  bbb: [{ required: true, message: '请选择服务项目', whitespace: true, type: 'number' }]
+  aaa: [{ required: true, message: '请输入账号', whitespace: true, type: 'string' }],
+  bbb: [{ required: true, message: '请输入密码', whitespace: true, type: 'string' }]
 }
 
 // 表单所需下拉数据
 let arrListDown = {
-  tempOps: [
-    {label: '选项一', value: 0},
-    {label: '选项二', value: 1}
-  ]
 }
-const templateUrl:string = '/api/CustomerSalary/ExportTemplate?random=' + Math.floor(Math.random()*10)
+// const areaTree:any = []
 
 // 表单样式
 const formItemLayout = {
@@ -50,8 +47,8 @@ const onFinish = async (values:any, props:any) => {
   // }
 }
 
-const SignForm: React.FC<SignFormProps> = props => {
-  const { showSignModal, onCancel } = props;
+const CreateForm: React.FC<CreateFormProps> = props => {
+  const { showCreateModal, onCancel, currentVal,  modalTitle } = props;
   const [formData] = Form.useForm();
 
   // 根据ID获取角色信息
@@ -67,13 +64,19 @@ const SignForm: React.FC<SignFormProps> = props => {
   }
 
   useEffect(() => {
-  }, []);
+    if (currentVal) {
+      getModel(currentVal.id)
+    } else {
+      formData.resetFields();
+      getModel('')
+    }
+  }, [props.currentVal]);
 
   return (
     <Modal
       destroyOnClose
-      title="导入"
-      visible={showSignModal}
+      title={modalTitle}
+      visible={showCreateModal}
       onCancel={() => onCancel()}
       footer={null}
     >
@@ -83,7 +86,6 @@ const SignForm: React.FC<SignFormProps> = props => {
           formItem={formItem}
           arrListDown={arrListDown}
           formRules={rules}
-          templateUrl={templateUrl}
         />
 
         {/* 弹窗按钮部分 */}
@@ -96,4 +98,4 @@ const SignForm: React.FC<SignFormProps> = props => {
   );
 };
 
-export default SignForm;
+export default CreateForm;

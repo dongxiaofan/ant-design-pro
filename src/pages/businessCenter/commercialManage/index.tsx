@@ -7,7 +7,8 @@ import { SorterResult } from 'antd/es/table/interface';
 
 import BuyForm from './modal/BuyForm';
 import SetForm from './modal/SetForm';
-import SignForm from './modal/SignForm';
+import ModifyForm from './modal/ModifyForm';
+import StopForm from './modal/StopForm';
 import { TableListItem } from './data';
 
 import { listThead } from './tableHead';
@@ -46,30 +47,18 @@ const searchFn = async (actionRef:any) => {
 
 const CustomerManage: React.FC<{}> = () => {
   const [sorter, setSorter, ] = useState<string>('');
-  const [createModalTitle, setCreateModalTitle] = useState<string>('');
   const [createModalVisible, handleBuyModalVisible] = useState<boolean>(false);
   const [setModalVisible, handleSetModalVisible] = useState<boolean>(false);
-  const [signModalVisible, handleSignModalVisible] = useState<boolean>(false);
+  const [stopModalVisible, handleStopModalVisible] = useState<boolean>(false);
+  const [modifyModalVisible, handleModifyModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [currentVal, setCurrentVal] = useState(undefined);
-  const [areaTree, setAreaTree] = useState();
 
   useEffect(() => {
-    getAreaTree()
   }, []);
 
-  // 获取省市区树列表
-  const getAreaTree = async () => {
-    let resp = await SysAreaApi.getAreaTree()
-    console.log('获取省市区树列表: ', resp)
-    if (resp.success) {
-      setAreaTree(resp.data)
-    }
-  }
-
-  // 显示弹窗-新增/编辑
+  // 显示弹窗-新增
   const handleShowBuyModal = (item: any) => {
-    setCreateModalTitle(item ? '编辑客户' : '新增客户')
     handleBuyModalVisible(true);
     setCurrentVal(item);
   }
@@ -77,12 +66,16 @@ const CustomerManage: React.FC<{}> = () => {
   // 显示弹窗-导入
   const handleShowSetModal = (item: any) => {
     handleSetModalVisible(true);
-    setCurrentVal(item);
   }
 
   // 显示弹窗-签约
-  const handleShowSignModal = (item: any) => {
-    handleSignModalVisible(true);
+  const handleShowStopModal = (item: any) => {
+    handleStopModalVisible(true);
+  }
+
+  // 显示弹窗-更改商保
+  const handleShowModifyModal = (item: any) => {
+    handleModifyModalVisible(true);
     setCurrentVal(item);
   }
 
@@ -92,10 +85,11 @@ const CustomerManage: React.FC<{}> = () => {
     dataIndex: 'option',
     valueType: 'option',
     width: 240,
+    fixed: 'right',
     render: (text:string, record:any) => (
       <div>
-        <a onClick={() => handleShowSignModal(record)}>提前停保</a>
-        <a onClick={() => handleShowBuyModal(record)}>更改人员</a>
+        <a onClick={() => handleShowStopModal(record)}>提前停保</a>
+        <a onClick={() => handleShowModifyModal(record)}>更改人员</a>
         <Popconfirm
           title="是否确定删除？"
           onConfirm={() => handleDelete({id: record.id}, actionRef)}
@@ -107,11 +101,13 @@ const CustomerManage: React.FC<{}> = () => {
     ),
   }
   const columns:any = listThead.concat(option)
+  const scroll:any = {x: 'true'}
 
   return (
     <PageHeaderWrapper>
       <ProTable
         // headerTitle="查询表格"
+        scroll={scroll}
         actionRef={actionRef}
         rowKey="id"
         onChange={(_, _filter, _sorter) => {
@@ -125,11 +121,6 @@ const CustomerManage: React.FC<{}> = () => {
           <Button type="primary" ghost onClick={() => handleShowSetModal(null)}>商保设置</Button>,
           <Button type="primary" onClick={() => handleShowBuyModal(null)}><PlusOutlined /> 购买商保</Button>
         ]}
-        tableAlertRender={(selectedRowKeys, selectedRows) => (
-          <div>
-            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项
-          </div>
-        )}
         request={params => query(params)} // 暂时隐藏
         columns={columns}
         rowSelection={{}}
@@ -149,10 +140,19 @@ const CustomerManage: React.FC<{}> = () => {
         query={() => searchFn(actionRef)}
       />
 
-      {/* 签约弹窗 */}
-      <SignForm
-        onCancel={() => handleSignModalVisible(false)}
-        showSignModal={signModalVisible}
+      {/* 更改商保弹窗 */}
+      <ModifyForm
+        currentVal={currentVal}
+        onCancel={() => handleModifyModalVisible(false)}
+        showModifyModal={modifyModalVisible}
+        query={() => searchFn(actionRef)}
+      />
+
+      {/* 提前停保弹窗 */}
+      <StopForm
+        currentVal={currentVal}
+        onCancel={() => handleStopModalVisible(false)}
+        showStopModal={stopModalVisible}
         query={() => searchFn(actionRef)}
       />
     </PageHeaderWrapper>

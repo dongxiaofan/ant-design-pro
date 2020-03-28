@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Form, Col, Select, Switch, Input, TreeSelect, Radio, Upload, Button, Cascader, DatePicker } from 'antd';
 const { Option } = Select;
+const { TextArea } = Input;
 
 class BaseItem extends Component<any,any> {
   constructor(props:any) {
@@ -12,7 +13,7 @@ class BaseItem extends Component<any,any> {
   }
 
   render () {
-    let {formItem, formItemCol, arrListDown, formRules, treeData, actionUrl, templateUrl, areaTree} = this.props
+    let {formItem, formItemCol, arrListDown, formRules, treeData, actionUrl, templateUrl, areaTree, listenCall} = this.props
 
     return (
       <div className="ant-row">
@@ -24,9 +25,11 @@ class BaseItem extends Component<any,any> {
                   <Select
                     allowClear
                     showSearch
+                    labelInValue={item.labelInValue ? true : false}
                     filterOption={(input:any, option:any) =>
                       option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                     }
+                    onChange={item.onChange ? (value) => listenCall(item.onChange, value) : () => {}}
                   >
                     {arrListDown[`${item.options}`] ? arrListDown[`${item.options}`].map((ops:any) => {
                       return (
@@ -105,6 +108,24 @@ class BaseItem extends Component<any,any> {
                       <Button type="primary" ghost>选择文件</Button>
                     </Upload>
                   </div>
+                </Form.Item>
+              </Col>
+            )
+          }
+          else if (item.type === 'text') {
+            return (
+              <Col span={formItemCol || 24} key={index} className={item.style}>
+                <Form.Item label={item.label} name={item.model}>
+                  <Input placeholder={item.placeholder} disabled={true} />
+                </Form.Item>
+              </Col>
+            )
+          }
+          else if (item.type === 'textarea') {
+            return (
+              <Col span={formItemCol || 24} key={index} className={item.style}>
+                <Form.Item label={item.label} name={item.model} rules={formRules[`${item.model}`]}>
+                <TextArea allowClear placeholder={item.placeholder} rows={4} />
                 </Form.Item>
               </Col>
             )

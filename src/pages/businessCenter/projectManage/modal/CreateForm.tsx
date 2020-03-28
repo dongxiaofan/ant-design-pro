@@ -8,7 +8,6 @@ interface CreateFormProps {
   query: () => void;
   currentVal: any;
   modalTitle: any;
-  areaTree: any;
 }
 
 // 表单字段
@@ -78,7 +77,7 @@ const onFinish = async (values:any, props:any) => {
 }
 
 const CreateForm: React.FC<CreateFormProps> = props => {
-  const { showCreateModal, onCancel, currentVal,  modalTitle, areaTree } = props;
+  const { showCreateModal, onCancel, currentVal,  modalTitle } = props;
   const [formData] = Form.useForm();
 
   // 根据ID获取角色信息
@@ -118,7 +117,6 @@ const CreateForm: React.FC<CreateFormProps> = props => {
           formItem={formItem}
           arrListDown={arrListDown}
           formRules={rules}
-          areaTree={areaTree}
         />
 
         {/* 弹窗按钮部分 */}

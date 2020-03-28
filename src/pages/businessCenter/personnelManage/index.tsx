@@ -52,20 +52,9 @@ const CustomerManage: React.FC<{}> = () => {
   const [signModalVisible, handleSignModalVisible] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
   const [currentVal, setCurrentVal] = useState(undefined);
-  const [areaTree, setAreaTree] = useState();
 
   useEffect(() => {
-    getAreaTree()
   }, []);
-
-  // 获取省市区树列表
-  const getAreaTree = async () => {
-    let resp = await SysAreaApi.getAreaTree()
-    console.log('获取省市区树列表: ', resp)
-    if (resp.success) {
-      setAreaTree(resp.data)
-    }
-  }
 
   // 显示弹窗-新增/编辑
   const handleShowCreateModal = (item: any) => {
@@ -91,6 +80,8 @@ const CustomerManage: React.FC<{}> = () => {
     title: '操作',
     dataIndex: 'option',
     valueType: 'option',
+    width: 180,
+    fixed: 'right',
     render: (text:string, record:any) => (
       <div>
         <a onClick={() => handleShowSignModal(record)}>签约</a>
@@ -106,11 +97,13 @@ const CustomerManage: React.FC<{}> = () => {
     ),
   }
   const columns:any = listThead.concat(option)
+  const scroll:any = {x: 'true'}
 
   return (
     <PageHeaderWrapper>
       <ProTable
         // headerTitle="查询表格"
+        scroll={scroll}
         actionRef={actionRef}
         rowKey="id"
         onChange={(_, _filter, _sorter) => {
@@ -125,11 +118,6 @@ const CustomerManage: React.FC<{}> = () => {
           <Button type="primary" ghost onClick={() => handleShowImportModal(null)}>导入</Button>,
           <Button type="primary" onClick={() => handleShowCreateModal(null)}><PlusOutlined /> 新建</Button>
         ]}
-        tableAlertRender={(selectedRowKeys, selectedRows) => (
-          <div>
-            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项
-          </div>
-        )}
         request={params => query(params)} // 暂时隐藏
         columns={columns}
         rowSelection={{}}
@@ -138,7 +126,6 @@ const CustomerManage: React.FC<{}> = () => {
       {/* 新建/编辑弹窗 */}
       <CreateForm
         currentVal={currentVal}
-        areaTree={areaTree}
         modalTitle={createModalTitle}
         onCancel={() => handleCreateModalVisible(false)}
         showCreateModal={createModalVisible}

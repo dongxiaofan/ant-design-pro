@@ -70,6 +70,8 @@ const CustomerManage: React.FC<{}> = () => {
     title: '操作',
     dataIndex: 'option',
     valueType: 'option',
+    width: 120,
+    fixed: 'right',
     render: (text:string, record:any) => (
       <div>
         <a onClick={() => handleShowCreateModal(record)}>编辑</a>
@@ -84,11 +86,13 @@ const CustomerManage: React.FC<{}> = () => {
     ),
   }
   const columns:any = listThead.concat(option)
+  const scroll:any = {x: 'true'}
 
   return (
     <PageHeaderWrapper>
       <ProTable
         // headerTitle="查询表格"
+        scroll={scroll}
         actionRef={actionRef}
         rowKey="id"
         onChange={(_, _filter, _sorter) => {
@@ -101,11 +105,6 @@ const CustomerManage: React.FC<{}> = () => {
         toolBarRender={(action, { selectedRows }) => [
           <Button type="primary" onClick={() => handleShowCreateModal(null)}><PlusOutlined /> 新建</Button>
         ]}
-        tableAlertRender={(selectedRowKeys, selectedRows) => (
-          <div>
-            已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项
-          </div>
-        )}
         request={params => query(params)} // 暂时隐藏
         columns={columns}
         rowSelection={{}}

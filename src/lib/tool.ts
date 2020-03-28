@@ -65,6 +65,7 @@ function getSelectValueList (typeName:any, arr:any) {
 function getTree (arr:any) {
   for(var i in arr){
     arr[i].value = arr[i].id
+    arr[i].key = arr[i].id
     if(arr[i].children){
       getTree(arr[i].children);
     }
